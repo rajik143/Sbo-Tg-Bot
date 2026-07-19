@@ -1,2 +1,2 @@
-web: python bot_enhanced.py
+web: python bot.py
 
