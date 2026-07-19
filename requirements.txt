@@ -1,4 +1,4 @@
-python-telegram-bot==21.4
-requests
-google-generativeai
-aiohttp
+python-telegram-bot>=21.0
+google-generativeai>=0.8.0
+requests>=2.31.0
+gTTS>=2.5.0
