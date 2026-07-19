@@ -1,21 +1,25 @@
 import os
+import asyncio
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, ContextTypes
 
 TOKEN = os.environ.get("BOT_TOKEN")
 
-# Debug: Token load ஆச்சானு check
-print(f"Token loaded: {TOKEN is not None}")
-print(f"Token length: {len(TOKEN) if TOKEN else 0}")
-
 if not TOKEN:
-    raise ValueError("BOT_TOKEN environment variable is not set!")
+    raise ValueError("BOT_TOKEN not set!")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("வணக்கம்! நான் உங்கள் Bot 🤖")
+    await update.message.reply_text("வணக்கம்! Bot Ready 🤖")
 
-app = ApplicationBuilder().token(TOKEN).build()
-app.add_handler(CommandHandler("start", start))
+async def main():
+    app = Application.builder().token(TOKEN).build()
+    app.add_handler(CommandHandler("start", start))
+    
+    print("Bot is running...")
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling()
+    await asyncio.Event().wait()  # Run forever
 
-print("Bot is running...")
-app.run_polling()
+if __name__ == "__main__":
+    asyncio.run(main())
